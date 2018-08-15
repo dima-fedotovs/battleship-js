@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Ship Placement</title>
 </head>
-<body>
+<body onload="checkStatus()">
 <div id="wait-another" class="w3-hide">
     <h1>Please wait another player</h1>
 </div>
@@ -76,9 +76,6 @@
         });
     }
 
-    document.onload(function () {
-        checkStatus();
-    })
 </script>
 </body>
 </html>
