@@ -98,5 +98,17 @@ public class GameApi {
         }).orElseThrow(IllegalStateException::new);
     }
 
+    @POST
+    @RolesAllowed({"ADMIN","USER"})
+    @Path("/fire")
+    public void doFire() {
+        User currentUser = userStore.getCurrentUser();
+        Optional<Game> game = gameStore.getOpenGameFor(currentUser);
+        game.ifPresent(g -> {
+            boolean p1a = g.isPlayer1Active();
+            g.setPlayer1Active(!p1a);
+            g.setPlayer2Active(p1a);
+        });
+    }
 
 }
