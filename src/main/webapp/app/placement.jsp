@@ -59,12 +59,12 @@
             "method": "GET",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             }
         }).then(function (response) {
             return response.json();
         }).then(function (game) {
-            console.log(JSON.stringify(game))
+            console.log(JSON.stringify(game));
             if (game.status === "PLACEMENT" && game.playerActive) {
                 document.getElementById("placement-field").classList.remove("w3-hide");
                 document.getElementById("wait-another").classList.add("w3-hide");
