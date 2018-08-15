@@ -19,6 +19,8 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -62,9 +64,16 @@ public class GameApi {
         Optional<Game> game = gameStore.getStartedGameFor(currentUser, GameStatus.PLACEMENT);
         game.ifPresent(g -> {
             if (g.isPlayerActive(currentUser)) {
+                List<String> ships = new ArrayList<>();
                 for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
                     log.info(pair.getKey() + " - " + pair.getValue());
+                    String addr = pair.getKey();
+                    String value = pair.getValue().toString();
+                    if ("SHIP".equals(value)) {
+                        ships.add(addr);
+                    }
                 }
+                gameStore.setShips(g, currentUser, false, ships);
                 g.setPlayerActive(currentUser, false);
             }
         });
