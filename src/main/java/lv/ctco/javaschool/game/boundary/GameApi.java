@@ -75,6 +75,11 @@ public class GameApi {
                 }
                 gameStore.setShips(g, currentUser, false, ships);
                 g.setPlayerActive(currentUser, false);
+                if (!g.isPlayer1Active() && !g.isPlayer2Active()) {
+                    g.setStatus(GameStatus.STARTED);
+                    g.setPlayer1Active(true);
+                    g.setPlayer2Active(false);
+                }
             }
         });
     }
