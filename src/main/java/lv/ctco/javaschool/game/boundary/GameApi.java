@@ -65,6 +65,7 @@ public class GameApi {
                 for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
                     log.info(pair.getKey() + " - " + pair.getValue());
                 }
+                g.setPlayerActive(currentUser, false);
             }
         });
     }

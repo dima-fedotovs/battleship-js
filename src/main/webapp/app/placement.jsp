@@ -50,6 +50,7 @@
             body: JSON.stringify(data)
         }).then(function (response) {
             console.log("DONE");
+            checkStatus();
         });
     }
 
