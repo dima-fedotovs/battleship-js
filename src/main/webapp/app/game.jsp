@@ -17,6 +17,15 @@
             width: 20px;
             text-align: center;
         }
+        td.SHIP {
+            background-color: black;
+        }
+        td.MISS {
+            background-color: aqua;
+        }
+        td.HIT {
+            background-color: red;
+        }
     </style>
 </head>
 <body onload="checkStatus()">
@@ -35,7 +44,7 @@
             <tr>
                 <td><c:out value="${row}"/></td>
                 <c:forTokens items="A,B,C,D,E,F,G,H,I,J" delims="," var="col">
-                    <td><input name="addr" type="radio" id="${col}${row}"/>&nbsp;</td>
+                    <td id="t${col}${row}"><input name="addr" type="radio" id="${col}${row}"/></td>
                 </c:forTokens>
             </tr>
         </c:forTokens>
@@ -53,7 +62,7 @@
             <tr>
                 <td><c:out value="${row}"/></td>
                 <c:forTokens items="A,B,C,D,E,F,G,H,I,J" delims="," var="col">
-                    <td>&nbsp;</td>
+                    <td id="m${col}${row}">&nbsp;</td>
                 </c:forTokens>
             </tr>
         </c:forTokens>
@@ -86,7 +95,24 @@
                 window.setTimeout(function () {
                     checkStatus();
                 }, 1000);
+            } else {
+                return;
             }
+            drawShips();
+        });
+    }
+
+    function drawShips() {
+        fetch("<c:url value='/api/game/cells'/>", {
+            "method": "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            return response.json();
+        }).then(function (cells) {
+            console.log(JSON.stringify(cells));
         });
     }
 
