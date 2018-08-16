@@ -129,6 +129,23 @@ public class GameApi {
         User currentUser = userStore.getCurrentUser();
         Optional<Game> game = gameStore.getOpenGameFor(currentUser);
         game.ifPresent(g -> {
+            User oppositeUser = g.getOpposite(currentUser);
+            Optional<Cell> enemyCell = gameStore.findCell(g, oppositeUser, address, false);
+
+            if (enemyCell.isPresent()) {
+                Cell c = enemyCell.get();
+                if (c.getState() == CellState.SHIP) {
+                    c.setState(CellState.HIT);
+                    gameStore.setCellState(g, currentUser, address, true, CellState.HIT);
+                    return;
+                } else if (c.getState() == CellState.EMPTY) {
+                    c.setState(CellState.MISS);
+                    gameStore.setCellState(g, currentUser, address, true, CellState.MISS);                }
+            } else {
+                gameStore.setCellState(g, oppositeUser, address, false, CellState.MISS);
+                gameStore.setCellState(g, currentUser, address, true, CellState.MISS);
+            }
+
             boolean p1a = g.isPlayer1Active();
             g.setPlayer1Active(!p1a);
             g.setPlayer2Active(p1a);

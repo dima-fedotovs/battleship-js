@@ -136,7 +136,7 @@
         var checked = document.querySelector('input[name=addr]:checked');
         var checkedAddr = checked.id;
         console.log("firing addr " + checkedAddr);
-        fetch("/api/game/fire/" + checkedAddr, {
+        fetch("<c:url value='/api/game/cells'/>/" + checkedAddr, {
             "method": "POST",
             headers: {
                 'Accept': 'application/json',
