@@ -95,6 +95,9 @@
                 window.setTimeout(function () {
                     checkStatus();
                 }, 1000);
+            } else if (game.status === "FINISHED") {
+                location.href = "<c:url value='/app/result.jsp'/>";
+                return;
             } else {
                 return;
             }

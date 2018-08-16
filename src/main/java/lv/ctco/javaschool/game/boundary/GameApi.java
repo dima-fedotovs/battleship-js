@@ -112,7 +112,7 @@ public class GameApi {
     @Path("/status")
     public GameDto getGameStatus() {
         User currentUser = userStore.getCurrentUser();
-        Optional<Game> game = gameStore.getOpenGameFor(currentUser);
+        Optional<Game> game = gameStore.getLatestGame(currentUser);
         return game.map(g -> {
             GameDto dto = new GameDto();
             dto.setStatus(g.getStatus());
@@ -137,6 +137,7 @@ public class GameApi {
                 if (c.getState() == CellState.SHIP) {
                     c.setState(CellState.HIT);
                     gameStore.setCellState(g, currentUser, address, true, CellState.HIT);
+                    checkFinishState(g, oppositeUser);
                     return;
                 } else if (c.getState() == CellState.EMPTY) {
                     c.setState(CellState.MISS);
@@ -150,6 +151,16 @@ public class GameApi {
             g.setPlayer1Active(!p1a);
             g.setPlayer2Active(p1a);
         });
+    }
+
+    private void checkFinishState(Game game, User player) {
+        boolean hasShips = gameStore.getCells(game, player)
+                .stream()
+                .filter(c -> !c.isTargetArea())
+                .anyMatch(c -> c.getState() == CellState.SHIP);
+        if (!hasShips) {
+            game.setStatus(GameStatus.FINISHED);
+        }
     }
 
 }
