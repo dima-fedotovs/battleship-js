@@ -112,7 +112,11 @@
         }).then(function (response) {
             return response.json();
         }).then(function (cells) {
-            console.log(JSON.stringify(cells));
+            cells.forEach(function (c) {
+                var id = (c.targetArea ? "t" : "m") + c.address;
+                var tblCell = document.getElementById(id);
+                tblCell.className = c.state;
+            });
         });
     }
 
