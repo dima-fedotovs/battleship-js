@@ -18,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -122,8 +123,9 @@ public class GameApi {
 
     @POST
     @RolesAllowed({"ADMIN","USER"})
-    @Path("/fire")
-    public void doFire() {
+    @Path("/fire/{address}")
+    public void doFire(@PathParam("address") String address) {
+        log.info("Firing to " + address);
         User currentUser = userStore.getCurrentUser();
         Optional<Game> game = gameStore.getOpenGameFor(currentUser);
         game.ifPresent(g -> {
